@@ -1,3 +1,4 @@
+;Based of of MIKEOS
 os_string_strincmp:
 	pusha
 
