@@ -1,0 +1,11 @@
+=====================PixOS License=======================
+
+Based on MikeOS Project -
+Copyright (C) 2006 - 2014 MikeOS Developers -- http://mikeos.sourceforge.net
+
+With help from the OSDev Wiki -
+http://wiki.osdev.org/Real_mode_assembly_I
+
+Written by the
+JET Dev Team
+Copyright (C) 2013-2016

@@ -1,0 +1,48 @@
+===============================PixOS Changelog=============================
+
+Pre0.8 : Various Edits
+
+0.8 : Kernel Rewrite
+
+0.8.1 : Added Changelog 
+
+0.8.2c : Tests/Fixes and Support 
+
+0.8.3b : Added Color/CLS Support 
+
+0.8.3c : Bug Fixes 
+
+0.9 "SystemFile" : OS Rewrite attempt 
+
+0.9 XMAS : Ported bootloader on  
+December 24, 2015 at 12:15 AM 
+
+0.9.5 : Cleaned up, restored changelog 
+
+0.9.8 : More colors, clean up, CMD 
+
+1.0 : Clean up, new files 
+
+1.1 Kernel 1.3: Clean up, new files 
+
+1.1 Kernel 1.4 : Date Command 
+
+1.2 Kernel 1.5 : More Commands 
+
+1.3 Kernel 1.6 : Lots More 
+
+1.3 Kernel 1.7 : Disk Command Fixes 
+
+1.32 : Vol Command Added
+
+1.33 : Time command renamed
+
+1.34 : Added Date command
+
+1.4 : Added API
+
+1.4 Kernel 1.95 : Copy Command
+
+1.4 Kernel 1.97 : API 1.55 and Improvements
+
+1.42 : API 1.56 and Removed Changelog (New Text Viewer)
