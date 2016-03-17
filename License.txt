@@ -6,6 +6,8 @@ Copyright (C) 2006 - 2014 MikeOS Developers -- http://mikeos.sourceforge.net
 With help from the OSDev Wiki -
 http://wiki.osdev.org/Real_mode_assembly_I
 
+For more info, see GPL.txt.
+
 Written by the
 JET Dev Team
 Copyright (C) 2013-2016
