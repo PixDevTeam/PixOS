@@ -86,18 +86,17 @@ size_file:
 	call os_int_to_string
 	mov si, ax
 	call print_string
-	call os_print_newline
-	jmp mainloop
-
 	mov si, .size_msg
 	call print_string
+	call os_print_newline
+
+	jmp mainloop
 
 
 .failure:
 	mov si, notfound_msg
 	call print_string
 	jmp mainloop
-
 
 	.size_msg	db ' Bytes', 0
 
@@ -275,6 +274,18 @@ cs_r:
   popa
   ret
 
+cs_null:
+  pusha
+
+  mov ax, 0x0700    ; function to scroll window
+  mov bh, 0x0F    
+  mov cx, 0x0000  ; row = 0, column = 0
+  mov dx, 0x184f  ; row = 24 (0x18), column = 79 (0x4f)
+  int 0x10        ; call the BIOS interrupt
+
+  popa
+  ret
+
 cs_b:
   pusha
 
@@ -306,13 +317,12 @@ cs_y:
  ;logo3 db '||    ||  //\\ ', 0x0D, 0x0A, 0
  ;logo4 db '---------------', 0x0D, 0x0A, 0
  welcome db 'Welcome to the PixKernel', 0x0D, 0x0A, 0
- msg_version db 'Pix OS 1.42', 0x0D, 0x0A, 0
- kern_version db 'PixKern 2.0', 0x0D, 0x0A, 0
+ version_num db '1.43', 0x0D, 0x0A, 0
+ kern_version_num db '2.1', 0x0D, 0x0A, 0
  badcommand db 'No Existing Command :', 0x0D, 0x0A, 0
  num1 equ 1
  num2 equ 2
  prompt db '>', 0
- cmd_version db 'VERSION', 0
  cmd_help db 'HELP', 0
  cmd_size db 'SIZE', 0
  cmd_cls db 'CLS', 0
@@ -329,7 +339,7 @@ cs_y:
  cmd_cs_b db 'COLOR -B', 0
  cmd_cs_r db 'COLOR -R', 0
  cmd_cs_y db 'COLOR -Y', 0
- msg_help db 'Commands: version, help, ls, vol, rm, size, edit, color, time, bash', 0x0D, 0x0A, 0
+ msg_help db 'Commands: help, ls, vol, rm, size, edit, color, time, bash', 0x0D, 0x0A, 0
  msg_col db 'Need more Parameters', 0x0D, 0x0A, 0
  msg_col2 db '-g : green', 0x0D, 0x0A, 0
  msg_col3 db '-r : red', 0x0D, 0x0A, 0

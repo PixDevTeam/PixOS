@@ -1,4 +1,76 @@
 ;==================================GUI===============================;
+os_desktop:
+	pusha
+
+	mov word [.filename], 0		; Terminate string in case user leaves without choosing
+
+	mov ax, .buffer			; Get comma-separated list of filenames
+	call os_get_file_list
+
+	mov ax, .buffer			; Show those filenames in a list dialog box
+	mov bx, .help_msg1
+	mov cx, .help_msg2
+	call os_list_dialog
+
+	jc .esc_pressed
+
+	dec ax				; Result from os_list_box starts from 1, but
+					; for our file list offset we want to start from 0
+
+	mov cx, ax
+	mov bx, 0
+
+	mov si, .buffer			; Get our filename from the list
+.loop1:
+	cmp bx, cx
+	je .got_our_filename
+	lodsb
+	cmp al, ','
+	je .comma_found
+	jmp .loop1
+
+.comma_found:
+	inc bx
+	jmp .loop1
+
+
+.got_our_filename:			; Now copy the filename string
+	mov di, .filename
+.loop2:
+	lodsb
+	cmp al, ','
+	je .finished_copying
+	cmp al, 0
+	je .finished_copying
+	stosb
+	jmp .loop2
+
+.finished_copying:
+	mov byte [di], 0		; Zero terminate the filename string
+
+	popa
+
+	mov ax, .filename
+
+	clc
+	ret
+
+
+.esc_pressed:				; Set carry flag if Escape was pressed
+	popa
+	stc
+	ret
+
+
+	.buffer		times 1024 db 0
+
+	.help_msg1	db 'Please select a TXT, INC or PCX file', 0
+	.help_msg2	db '', 0
+
+	.filename	times 13 db 0
+
+;============================TESTEND=================================;
+
 os_file_selector:
 	pusha
 
@@ -112,6 +184,8 @@ os_list_dialog:
 	mov di, 3			; Finish Y position
 	call os_draw_block		; Draw option selector window
 	mov si, buttons
+	call print_string
+	mov si, title
 	call print_string
 
 	;==============End=Window=test==========;
@@ -485,7 +559,7 @@ os_draw_background:
 	mov ah, 09h			; Draw white bar at top
 	mov bh, 0
 	mov cx, 80
-	mov bl, 10011111b
+	mov bl, 00001111b
 	mov al, ' '
 	int 10h
 
@@ -519,7 +593,7 @@ os_draw_background:
 	call print_string
 
 	mov dh, 0
-	mov dl, 1
+	mov dl, 20
 	call os_move_cursor
 	pop ax				; Get top string param
 	mov si, ax
@@ -842,3 +916,4 @@ os_version_msg db 'Version 1.4', 0
 dialog_string_1 db 'Welcome to PixOS!', 0
 dialog_string_2 db 'Please proceed to the', 0
 dialog_string_3	db 'PixOS command line.', 0
+title db 0

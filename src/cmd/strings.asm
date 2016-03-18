@@ -1,4 +1,22 @@
 ;=========STRINGS==========;
+os_string_join:
+	pusha
+
+	mov si, ax			; Put first string into CX
+	mov di, cx
+	call os_string_copy
+
+	call os_string_length		; Get length of first string
+
+	add cx, ax			; Position at end of first string
+
+	mov si, bx			; Add second string onto it
+	mov di, cx
+	call os_string_copy
+
+	popa
+	ret
+
 os_find_char_in_string:
 	pusha
 

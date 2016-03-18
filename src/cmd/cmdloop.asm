@@ -10,12 +10,6 @@ cmd_loop:
 
    mov si, buffer
 
-   mov di, cmd_version  	; 'VERSION' command
-   call strcmp
-   jc near .version
-
-   mov si, buffer
-
    mov di, cmd_ls		; 'LS' command
    call strcmp
    jc near .ls
@@ -63,22 +57,18 @@ cmd_loop:
    call strcmp
    jc near .size
 
-;=========================APPTEST======================;
-
    mov si, buffer
 
    mov di, cmd_run		; 'RUN' command
    call strcmp
    jc near .run
 
-;=====================END=APPTEST======================;
-
-   ;mov si, badcommand
-   ;call print_string
-   ;mov si, buffer		; BAD COMMAND
-   ;call print_string
-   ;call os_print_newline
-   ;jmp mainloop
+   mov si, badcommand
+   call print_string
+   mov si, buffer		; BAD COMMAND
+   call print_string
+   call os_print_newline
+   jmp mainloop
 
  .help:
     mov si, msg_help
@@ -150,11 +140,3 @@ cmd_loop:
   call print_date
 
   jmp mainloop
-
- .version:
-   mov si, msg_version
-   call print_string
-   mov si, kern_version
-   call print_string
- 
-   jmp mainloop
