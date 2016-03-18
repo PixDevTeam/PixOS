@@ -72,13 +72,131 @@ main:
    mov bl, 17h
    int 10h
    ;-----End-----;
+   call cs_null
+   ;-----SYS-CHECK-----;
+   mov si, syscheckver
+   call print_string
+   mov si, version_num
+   call print_string
+   call os_wait_for_key
+
+   mov si, syscheckkern
+   call print_string
+   mov si, kern_version_num
+   call print_string
+   call os_wait_for_key
+
+   mov si, syscheck1
+   call print_string
+   call os_print_newline
+   call os_wait_for_key
+   ;-----COLOR-----;
+   mov  ah,  09h 
+   mov  al,  97 
+   mov  bx,  100b
+   mov  cx,  01h 
+   int  10h
+
+   mov si, syscheck2_1
+   call print_string
+
+   mov  ah,  09h 
+   mov  al,  97 
+   mov  bx,  010b
+   mov  cx,  01h 
+   int  10h
+
+   mov si, syscheck2_2
+   call print_string
+
+   mov  ah,  09h 
+   mov  al,  97 
+   mov  bx,  1110b
+   mov  cx,  01h 
+   int  10h
+
+   mov si, syscheck2_3
+   call print_string
+
+   mov  ah,  09h 
+   mov  al,  97 
+   mov  bx,  1b
+   mov  cx,  01h 
+   int  10h
+
+   mov si, syscheck2_4
+   call print_string
+
+   mov  ah,  09h 
+   mov  al,  97 
+   mov  bx,  101b
+   mov  cx,  01h 
+   int  10h
+
+   mov si, syscheck2_5
+   call print_string
+
+   mov si, syscheck2_6
+   call print_string
+
+   call os_print_newline
+   call os_wait_for_key
+   ;----END-COLOR--;
+   mov ax, boot_file_string
+   call os_file_exists
+   jc not_found
+
+   mov si, syscheck3
+   call print_string
+   call os_print_newline
+   call os_wait_for_key
+
+   mov si, syscheck4
+   call print_string
+   call os_print_newline
+   call os_wait_for_key
+	
+   ;-END-SYS-CHECK-----;
+
    mov cx, 10011111b
 
    mov si, boot_file_string
    call bin_file
    mov si, welcome
    call print_string
-   ;call option_screen
+
+   jmp mainloop
+
+not_found:
+   mov si, syscheck3n
+   call print_string
+   call os_print_newline
+   call os_wait_for_key
+
+   mov si, syscheck4
+   call print_string
+   call os_print_newline
+   call os_wait_for_key
+
+   mov cx, 10011111b
+
+   ;---Color----;
+   mov ax, 0x0700    ; function to scroll window
+   mov bh, 0xd0    
+   mov cx, 0x0000  ; row = 0, column = 0
+   mov dx, 0x184f  ; row = 24 (0x18), column = 79 (0x4f)
+   int 0x10
+
+   mov ah, 09h
+   mov cx, 1000h
+   mov al, 20h
+   mov bl, 17h
+   int 10h
+   ;-----End-----;
+
+   call os_clear_screen
+   mov si, welcome
+   call print_string
 
    jmp mainloop
 
@@ -168,6 +286,19 @@ mainloop:
    int 0x10		; newline
  
    ret
+
+  syscheckkern db 'Kernel Version...................................', 0
+  syscheckver db 'System Version..................................', 0
+  syscheck1 db 'KERNEL Loaded...................................TRUE', 0
+  syscheck2_1 db 'C', 0
+  syscheck2_2 db 'O', 0
+  syscheck2_3 db 'L', 0
+  syscheck2_4 db 'O', 0
+  syscheck2_5 db 'R ', 0
+  syscheck2_6 db 'Loaded....................................TRUE', 0
+  syscheck3 db 'Boot Logo Loaded................................TRUE', 0
+  syscheck3n db 'Boot Logo Loaded...............................FALSE', 0
+  syscheck4 db 'Ready for Boot. Press any key to continue.', 0
  
   %INCLUDE "cmd/cmd.asm"
   %INCLUDE "cmd/disk_cmd.asm"
