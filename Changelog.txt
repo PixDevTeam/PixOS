@@ -46,3 +46,7 @@ December 24, 2015 at 12:15 AM
 1.4 Kernel 1.97 : API 1.55 and Improvements
 
 1.42 : API 1.56 and Removed Changelog (New Text Viewer)
+
+1.42 Kernel 2.0 : Boot Image
+
+1.43 Kernel 2.1: New Boot Check
