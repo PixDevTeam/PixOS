@@ -16,6 +16,12 @@ cmd_loop:
 
    mov si, buffer
 
+   mov di, cmd_desktop		; STARTX
+   call strcmp
+   jc near .desktop
+
+   mov si, buffer
+
    mov di, cmd_test		; 'TEST' command
    call strcmp
    jc near .test
@@ -44,6 +50,12 @@ cmd_loop:
    mov di, cmd_time		; 'TIME' command
    call strcmp
    jc near .time
+
+   mov si, buffer
+
+   mov di, cmd_shutdown		; 'SHUTDOWN' command
+   call strcmp
+   jc near .shutdown
 
    mov si, buffer
 
@@ -100,12 +112,29 @@ cmd_loop:
 
   jmp mainloop
 
+ .desktop:
+  call os_desktop
+
+  jmp mainloop
+
+ .shutdown:
+  call shutdown
+
+  jmp mainloop
+
  .rm:
   call del_file
 
   jmp mainloop
 
  .run:
+  mov bl, 00001111b
+  mov dl, 0
+  mov dh, 0
+  mov si, 80
+  mov di, 25
+  call os_draw_block
+
   call run_file
   call os_print_newline
 

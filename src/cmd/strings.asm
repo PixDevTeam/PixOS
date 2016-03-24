@@ -1,4 +1,75 @@
 ;=========STRINGS==========;
+os_wait_for_key:
+	pusha
+
+	mov ax, 0
+	mov ah, 10h			; BIOS call to wait for key
+	int 16h
+
+	mov [.tmp_buf], ax		; Store resulting keypress
+
+	popa				; But restore all other regs
+	mov ax, [.tmp_buf]
+	ret
+
+
+	.tmp_buf	dw 0
+
+os_string_to_int:
+	pusha
+
+	mov ax, si			; First, get length of string
+	call os_string_length
+
+	add si, ax			; Work from rightmost char in string
+	dec si
+
+	mov cx, ax			; Use string length as counter
+
+	mov bx, 0			; BX will be the final number
+	mov ax, 0
+
+
+	; As we move left in the string, each char is a bigger multiple. The
+	; right-most character is a multiple of 1, then next (a char to the
+	; left) a multiple of 10, then 100, then 1,000, and the final (and
+	; leftmost char) in a five-char number would be a multiple of 10,000
+
+	mov word [.multiplier], 1	; Start with multiples of 1
+
+.loop:
+	mov ax, 0
+	mov byte al, [si]		; Get character
+	sub al, 48			; Convert from ASCII to real number
+
+	mul word [.multiplier]		; Multiply by our multiplier
+
+	add bx, ax			; Add it to BX
+
+	push ax				; Multiply our multiplier by 10 for next char
+	mov word ax, [.multiplier]
+	mov dx, 10
+	mul dx
+	mov word [.multiplier], ax
+	pop ax
+
+	dec cx				; Any more chars?
+	cmp cx, 0
+	je .finish
+	dec si				; Move back a char in the string
+	jmp .loop
+
+.finish:
+	mov word [.tmp], bx
+	popa
+	mov word ax, [.tmp]
+
+	ret
+
+
+	.multiplier	dw 0
+	.tmp		dw 0
+
 os_string_join:
 	pusha
 

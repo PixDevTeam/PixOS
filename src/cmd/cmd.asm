@@ -1,4 +1,21 @@
 ;===========CMDS=====================;
+shutdown:
+	mov     ax, 5301h
+	xor     bx, bx
+	int     15h
+
+	mov     ax, 530Eh
+	xor     bx, bx
+	mov     cx, 0102h
+	int     15h
+
+	mov     ax, 5307h
+	mov     bx, 0001h
+	mov     cx, 0003h
+	int     15h
+
+	ret
+
 ren_file:
 	mov word si, [param_list]
 	call os_string_parse
@@ -318,7 +335,7 @@ cs_y:
  ;logo4 db '---------------', 0x0D, 0x0A, 0
  welcome db 'Welcome to the PixKernel', 0x0D, 0x0A, 0
  version_num db '1.43', 0x0D, 0x0A, 0
- kern_version_num db '2.1', 0x0D, 0x0A, 0
+ kern_version_num db '2.2', 0x0D, 0x0A, 0
  badcommand db 'No Existing Command :', 0x0D, 0x0A, 0
  num1 equ 1
  num2 equ 2
@@ -327,7 +344,9 @@ cs_y:
  cmd_size db 'SIZE', 0
  cmd_cls db 'CLS', 0
  cmd_ls db 'LS', 0
+ cmd_desktop db 'STARTX', 0
  cmd_vol db 'VOL', 0
+ cmd_shutdown db 'SHUTDOWN', 0
  cmd_test db 'TEST', 0
  cmd_rm db 'RM', 0
  cmd_run db 'BASH', 0
@@ -339,7 +358,7 @@ cs_y:
  cmd_cs_b db 'COLOR -B', 0
  cmd_cs_r db 'COLOR -R', 0
  cmd_cs_y db 'COLOR -Y', 0
- msg_help db 'Commands: help, ls, vol, rm, size, edit, color, time, bash', 0x0D, 0x0A, 0
+ msg_help db 'Commands: help, startx, ls, vol, rm, size, edit, color, time, bash, shutdown', 0x0D, 0x0A, 0
  msg_col db 'Need more Parameters', 0x0D, 0x0A, 0
  msg_col2 db '-g : green', 0x0D, 0x0A, 0
  msg_col3 db '-r : red', 0x0D, 0x0A, 0
